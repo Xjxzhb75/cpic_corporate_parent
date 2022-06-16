@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.web.menu.mapper.MenuMapper">
+    <select id="getMenuListByUserId" parameterType="long" resultType="com.cpic.web.menu.entity.Menu">
+     select DISTINCT m.id,m.parent_id,m.label,m.code,m.url,m.type,m.icon,m.remark,m.path,m.order_num,m.name
+from xinjianxun.fkxx_user u
+,xinjianxun.fkxx_user_role ur
+,xinjianxun.fkxx_role r
+,xinjianxun.fkxx_role_menu rm
+,xinjianxun.fkxx_menu m
+WHERE u.id=ur.user_id
+AND ur.role_id=r.id
+AND r.id=rm.role_id
+AND rm.menu_id=m.id
+AND u.id=#{userId}
+order BY m.order_num
+    </select>
+    <select id="getMenuListByRoleId" resultType="com.cpic.web.menu.entity.Menu" parameterType="long">
+        select p.* from xinjianxun.fkxx_menu p,xinjianxun.fkxx_role_menu  rp
+        where p.id=rp.menu_id
+        and rp.role_id=#{roleId}
+    </select>
+</mapper>
